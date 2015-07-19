@@ -204,6 +204,26 @@ public class Jenga<E> {
     }
 
     /**
+     * Print a representation of the tower.
+     * @return A string containing a representation of the tower.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (Layer<E> layer : layers) {
+            boolean[] layout = layer.getLayout();
+            for (boolean b : layout) {
+                if (b) {
+                    sb.append('#');
+                } else {
+                    sb.append('0');
+                }
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
+    /**
      * The tower collapses.
      * @throws TowerCollapseError The tower has collapsed.
      */
