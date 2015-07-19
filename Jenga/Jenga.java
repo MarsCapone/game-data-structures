@@ -23,6 +23,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -192,6 +193,14 @@ public class Jenga<E> {
     public void destroy() throws HandOfGodError {
         layers.clear();
         throw new HandOfGodError();
+    }
+
+    /**
+     * Get an iterator for the layers starting from the bottom.
+     * @return An iterator for the layers.
+     */
+    public Iterator<Layer<E>> layerIterator() {
+        return layers.iterator();
     }
 
     /**
