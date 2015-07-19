@@ -35,6 +35,16 @@ class Constants {
     public static final int STABILITY_DIVIDER_ADDED = 10; /** The number of layers to add before losing a stability point. */
 
     public static final int LAYER_BLOCKS = 3; /** The number of blocks per layer. */
+    public static final boolean[][] LAYER_STABLE = { /** Options for stable layers */
+                    {true, true, true},
+                    {true, true, false},
+                    {true, false, true},
+                    {false, true, true},
+                  /*{true, false, false},
+                    {false, false, true},
+                    {false, false, false},*/
+                    {false, true, false}
+            };
 }
 
 /**
@@ -127,10 +137,11 @@ public class Jenga<E> {
         }
         Layer<E> chosenLayer = layers.get(layer);
         int blockFriction = chosenLayer.friction(lindex);
-        boolean willCollapse = collapseCheck(blockFriction);
+        boolean stableCollapse = collapseCheck(blockFriction);
+        boolean obviousCollapse = chosenLayer.checkFeasibility(lindex);
         E data = chosenLayer.remove(lindex);
-        if (willCollapse) {
-            // collapse tower if too unstable
+        if (stableCollapse || obviousCollapse) {
+            // collapse tower if too unstable or not structurally sound
             collapse();
         }
         removedBlocks++;
@@ -299,6 +310,44 @@ class Layer<E> {
         Block block = blocks[i];
         blocks[i] = null;
         return (E) block.data;
+    }
+
+    /**
+     * Get the layout of the layer.
+     * @param print Whether or not to also print out the layout of the layer.
+     * @return List of booleans, which show false when the is no block, and true when there is.
+     */
+    public boolean[] getLayout(boolean print) {
+        boolean[] layout = new boolean[Constants.LAYER_BLOCKS];
+        for (int i = 0; i < Constants.LAYER_BLOCKS; i++) {
+            if (blocks[i] == null) {
+                layout[i] = false;
+            } else {
+                layout[i] = true;
+            }
+        }
+        if (print) {
+            System.out.println(layout);
+        }
+        return layout;
+    }
+
+    public boolean[] getLayout() {
+        return getLayout(false);
+    }
+
+    /**
+     * Check if removing a block is structurally sound. Only works if Constants.LAYER_BLOCKS is 3.
+     * @param i The index of the block which will be removed.
+     * @return True if the layer will still be structurally sound after the removal of the block, else false.
+     */
+    public boolean checkFeasibility(int i) {
+        boolean[] layout = getLayout();
+        layout[i] = !layout[i];
+        for (boolean[] stableLayout : Constants.LAYER_STABLE) {
+            return layout == stableLayout;
+        }
+        return false;
     }
 
     /**
