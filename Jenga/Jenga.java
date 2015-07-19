@@ -145,7 +145,7 @@ public class Jenga<E> {
      * @return The Block at that location.
      * @throws NonExistentBlockException There is no block at the specified index.
      */
-    public Block<E> getBlock(int layer, int lindex) throws NonExistentBlockException {
+    public Block getBlock(int layer, int lindex) throws NonExistentBlockException {
         Layer<E> chosenLayer = layers.get(layer);
         return chosenLayer.getBlock(lindex);
     }
@@ -209,9 +209,10 @@ class Block<E> {
  */
 class Layer<E> {
 
-    Block[] blocks = new Block[Constants.LAYER_BLOCKS];
+    Block[] blocks;
 
     Layer() {
+        blocks = new Block[Constants.LAYER_BLOCKS];
         for (int i = 0; i < Constants.LAYER_BLOCKS; i++) {
             blocks[i] = null;
         }
@@ -229,7 +230,7 @@ class Layer<E> {
             throw new NonExistentBlockException();
         }
         if (blocks[i] == null) {
-            blocks[i] = new Block(e);
+            blocks[i] = new Block<E>(e);
             return true;
         }
         return false;
@@ -295,7 +296,7 @@ class Layer<E> {
      * @return The block.
      * @throws NonExistentBlockException The specified index is out of bounds.
      */
-    public Block<E> getBlock(int i) throws NonExistentBlockException {
+    public Block getBlock(int i) throws NonExistentBlockException {
         if (i >= Constants.LAYER_BLOCKS || i < 0) {
             throw new NonExistentBlockException();
         }
