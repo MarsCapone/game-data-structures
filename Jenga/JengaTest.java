@@ -30,6 +30,7 @@ public class JengaTest extends TestCase {
     protected Jenga<Integer> jenga;
     protected boolean ex;
 
+    @Override
     protected void setUp() {
         jenga = new Jenga<Integer>();
         ex = false;
