@@ -74,4 +74,19 @@ public class JengaTest extends TestCase {
         assertTrue("Error should be thrown when deliberately knocking down the tower.", ex);
     }
 
+    @Test
+    public void testLayoutCheck() throws NonExistentBlockException {
+        for (int i = 0; i < 13; i++) {
+            jenga.add(i);
+        }
+        int remainingBlocks = 13 % Constants.LAYER_BLOCKS;
+        String[] layerLayouts = jenga.toString().split("\n");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < remainingBlocks; i++) {
+            sb.append('#');
+        }
+        boolean check = layerLayouts[layerLayouts.length-1].substring(0, remainingBlocks).equals(sb.toString());
+        assertTrue(check);
+    }
+
 }
