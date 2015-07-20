@@ -98,21 +98,34 @@ public class Jenga<E> {
             layers.add(layer);
             height++;
         }
-        layer = layers.get(layers.size());
+        layer = layers.get(layers.size() - 1);
         if (layer.full()) {
             // create a new layer and add
             layer = new Layer<E>();
             layers.add(layer);
             height++;
-        } else {
-            // add to the current highest layer
-            layer.add(e, lindex);
         }
         boolean successfulAdd = layer.add(e, lindex);
         if (successfulAdd) {
             updateStability();
         }
         return successfulAdd;
+    }
+
+    /**
+     * Add an element to the tower in the next available space.
+     * @param e The element to add.
+     * @return True if the element is successfully added, false otherwise. Not sure when this would ever return false.
+     */
+    public boolean add(E e) throws NonExistentBlockException {
+        boolean success = false;
+        for (int i = 0; i < 3; i++) {
+            success = add(e, i);
+            if (success) {
+                break;
+            }
+        }
+        return success;
     }
 
     /**
