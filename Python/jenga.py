@@ -36,6 +36,21 @@ class NonExistentBlockException(Exception):
     def __str__(self):
         return repr("That block does not exist.")
 
+class HandOfGodError(Exception):
+    def __str__(self):
+        return repr("You have knocked down the tower.")
+
+class TowerCollapseError(Exception):
+    def __str__(self):
+        return repr("The tower has become too unstable and has collapsed.")
+
+class CheatingAttemptExeption(Exception):
+    def __init__(self, chances):
+        self.chances = chances
+
+    def __str__(self):
+        return repr("You attempted to cheat, you have %d chances remaining." % self.chances)
+
 class _Block(object):
     def __init__(self, data):
         self.data = data
@@ -89,25 +104,72 @@ class Jenga(object):
     stability = STABILITY
 
     def add(self, data, layer_index=None):
+        """ Add some data to the tower. If layer index is specified, data is added at that index, otherwise data is added in next available space.
+        returns:
+            True if the data is added successfully.
+            False if the data is not added.
+        raises:
+        """
         pass
 
     def remove(self, layer, layer_index):
+        """ Removes the block at the specified layer and layer index.
+        returns:
+            The data of the block.
+        raises:
+            NonExistentBlockException if the the specified block does not exist.
+            TowerCollapseError if removing the block causes the tower to collapse.
+        """
         pass
 
     def peek(self, layer, layer_index):
+        """ Look at the data at the spcified layer and layer index.
+        returns:
+            The data of the block.
+        raises:
+            NonExistentBlockException if the specified block does not exist.
+        """
         pass
 
     def friction(self, layer, layer_index):
+        """ Test the friction for the block at the specified index. Friction can be in the range 1..10.
+        returns:
+            INT between 1 and 10 (inclusive) for the block at the specified location.
+        raises:
+            NonExistentBlockException if the specified block does not exit.
+        """
         pass
 
     def destroy(self):
-        pass
+        """ Knock over the tower.
+        returns:
+            void
+        raises:
+            HandOfGodError
+        """
+        self.layers = []
+        height = 0
+        removed_blocks = 0
+        stability = STABILITY
+        raise HandOfGodError
 
     def _collapse(self):
-        pass
+        """ The tower falls over.
+        returns:
+            void
+        raises:
+            TowerCollapseError
+        """
+        self.layers = []
+        height = 0
+        removed_blocks = 0
+        stability = STABILITY
+        raise TowerCollapseError
+
 
     def _check_stability(self):
+        """ Check the stability of the tower based on 
         pass
 
-    def _check_structure(self, layer, layer_index):
+    def _check_structure(self, layer, remove_layer_index):
         pass
