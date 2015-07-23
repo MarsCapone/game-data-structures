@@ -167,9 +167,18 @@ class Jenga(object):
         raise TowerCollapseError
 
 
-    def _check_stability(self):
-        """ Check the stability of the tower based on 
+    def _check_stability(self, friction):
+        """ Check the stability of the tower based on stability and friction.
+        returns:
+            True if the tower will collapse.
+            False otherwise.
+        """
         pass
 
     def _check_structure(self, layer, remove_layer_index):
+        """ Check the structural integrity of the tower is one were to remove a specific block.
+        returns:
+            True if the structure would be OK.
+            False otherwise.
+        """
         pass
